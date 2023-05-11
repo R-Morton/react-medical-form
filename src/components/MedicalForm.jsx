@@ -2,31 +2,27 @@ import React, { useState } from 'react';
 
 export default function MedicalForm(props) {
 
-  const [name, setName] = useState("")
-  const [email, setEmail] = useState("")
-  const [age, setAge] = useState("")
-  const [gender, setGender] = useState("")
+
+  const [formValues, setFormValues] = useState({
+    name: '',
+    email: '',
+    age: '',
+    gender: ''
+  });
+
   const [currentIndex, setCurrentIndex] = useState(0)
 
-  function handleChangeName (e) {
-    setName(e.target.value)
-  }
-
-  function handleChangeEmail (e) {
-    setEmail(e.target.value)
-  }
-
-  function handleChangeAge (e) {
-    setAge(e.target.value)
-  }
-
-  function handleChangeGender (e) {
-    setGender(e.target.value)
-  }
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormValues((prevFormValues) => ({
+      ...prevFormValues,
+      [name]: value
+    }));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    props.onSubmit({ name, email, age, gender })
+    props.onSubmit(formValues)
   }
 
   const handleNext = () => {
@@ -41,9 +37,9 @@ export default function MedicalForm(props) {
     return(
     <form>
       <label>Name:</label>
-      <input type="text" value={name} onChange={handleChangeName} />
+      <input type="text" name="name" value={formValues.name} onChange={handleChange} />
       <label>Email:</label>
-      <input type="text" value={email} onChange={handleChangeEmail} />
+      <input type="text" name="email" value={formValues.email} onChange={handleChange} />
       <button type="button" onClick={handleNext}>Next</button>
     </form>
     )
@@ -53,9 +49,9 @@ export default function MedicalForm(props) {
     return (
     <form onSubmit={handleSubmit}>
       <label>Age:</label>
-      <input type="text" value={age} onChange={handleChangeAge} />
+      <input type="text" name='age' value={formValues.age} onChange={handleChange} />
       <label>Gender:</label>
-      <input type="text" value={gender} onChange={handleChangeGender} />
+      <input type="text" name='gender' value={formValues.gender} onChange={handleChange} />
       <button type="button" onClick={handlePrevious}>Previous</button>
       <button type="submit">Submit</button>
     </form>
